@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  *
- * @author S539782
+ * @author S530058
  */
 public class Project02StartingFiles {
 
