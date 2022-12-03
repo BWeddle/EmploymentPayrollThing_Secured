@@ -1,8 +1,6 @@
 package project02startingfiles;
 import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -31,8 +29,8 @@ public class Project02StartingFiles {
         int security = validate(studentNum, staffNum, facultyNum, fileName);
 
         while(security != 0){
-            System.out.println("\nThis shit ain't safe\n");
-            if (security==1){
+            System.out.println("This shit ain't safe");
+            if (security == 1){
                 System.out.println("Enter the name of the file: ");
                 fileName = input.next();
             }
@@ -47,6 +45,7 @@ public class Project02StartingFiles {
             security = validate(studentNum, staffNum, facultyNum, fileName);
         }
 
+        
         //close user input scanner
         input.close();
 
@@ -102,6 +101,7 @@ public class Project02StartingFiles {
                 dep = splitLine[5];
                 workers[i] = new Faculty(name, idNum, working, rate, time, dep);
             }
+            thingy(splitLine, i);
         }
 
         //Close File Scanner
@@ -140,23 +140,18 @@ public class Project02StartingFiles {
             return 1;
         }
 
-        while (inputFile.hasNextLine()){
-            numLines += 1;
+        for(int i = 0; i <= numLinesNeeded; i++){
+            if(!inputFile.hasNextLine()){
+                return 2;
+            }
         }
 
         inputFile.close();
 
-        if (numLines < numLinesNeeded){
-            System.out.println("You have not listed all employees available");
-            return 2;
-        }
-        else if(numLines > numLinesNeeded){
-            System.out.println("You have listed more employees than available");
-            return 2;
-        }
-
-        //Insert Regex check here
-        
         return 0;
     }   
+
+    private static void thingy(String[] line, int location){
+        System.out.println(line[location]);
+    }
 }
