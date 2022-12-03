@@ -32,7 +32,7 @@ public abstract class Employee {
      * @param number
      * @param employed
      */
-    public Employee(String name, int number, boolean employed){
+    protected Employee(String name, int number, boolean employed){
         employeeName = name;
         employeeId = number;
         isWorking = employed;

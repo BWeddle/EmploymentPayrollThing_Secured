@@ -1,6 +1,8 @@
 package project02startingfiles;
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -25,6 +27,29 @@ public class Project02StartingFiles {
         System.out.println("Enter the name of the file: ");
         String fileName = input.next();
         
+        //INPUT VALIDATION!!!!!
+        int security = validate(studentNum, staffNum, facultyNum, fileName);
+
+        while(security != 0){
+            System.out.println("\nThis shit ain't safe\n");
+            if (security==1){
+                System.out.println("Enter the name of the file: ");
+                fileName = input.next();
+            }
+            else if(security == 2){
+                System.out.println("Enter the number of students in the file: ");
+                studentNum = input.nextInt();
+                System.out.println("Enter the number of staff in the file: ");
+                staffNum = input.nextInt();
+                System.out.println("Enter the number of faculty in the file: ");
+                facultyNum = input.nextInt();
+            }
+            security = validate(studentNum, staffNum, facultyNum, fileName);
+        }
+
+        //close user input scanner
+        input.close();
+
         //Opening and read the file
         File empFile = new File(fileName);
         Scanner inputFile = new Scanner(empFile);
@@ -78,6 +103,9 @@ public class Project02StartingFiles {
                 workers[i] = new Faculty(name, idNum, working, rate, time, dep);
             }
         }
+
+        //Close File Scanner
+        inputFile.close();
         
         //print out the contents of the array
         for (Employee i: workers) {
@@ -89,14 +117,46 @@ public class Project02StartingFiles {
         
         //Printing two week pay to the screen/ Removed inactive employees
         for (Employee i: workers) {
-            if (i.isWorking == true){
+            if (i.isWorking){
                 System.out.println(i.getName() + "\t $" + i.getPay()/100);
             }
             else{
                 System.out.print("");
             }
         }
-        
     }
-    
+
+    private static int validate(int x, int y, int z, String file){
+        int numLines = 0;
+        int numLinesNeeded = x + y + z;
+        //Opening and read the file
+        File empFile = new File(file);
+        Scanner inputFile;
+        try{
+            inputFile = new Scanner(empFile);
+        }
+        catch(Exception e){
+            System.out.println("File not found, please try again");
+            return 1;
+        }
+
+        while (inputFile.hasNextLine()){
+            numLines += 1;
+        }
+
+        inputFile.close();
+
+        if (numLines < numLinesNeeded){
+            System.out.println("You have not listed all employees available");
+            return 2;
+        }
+        else if(numLines > numLinesNeeded){
+            System.out.println("You have listed more employees than available");
+            return 2;
+        }
+
+        //Insert Regex check here
+        
+        return 0;
+    }   
 }
