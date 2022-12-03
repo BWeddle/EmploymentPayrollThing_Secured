@@ -44,7 +44,6 @@ public class Project02StartingFiles {
             }
             security = validate(studentNum, staffNum, facultyNum, fileName);
         }
-
         
         //close user input scanner
         input.close();
@@ -56,13 +55,6 @@ public class Project02StartingFiles {
         //Initializing variables
         String line = "";
         String[] splitLine;
-        String name = "";
-        int idNum = 0;
-        boolean working = false;
-        int time = 0;
-        boolean workStudy = false;
-        double rate = 0;
-        String dep = "";
         
         //Calculate number of employees
         int empNumber = studentNum + staffNum + facultyNum;
@@ -73,35 +65,7 @@ public class Project02StartingFiles {
         for (int i = 0; i < workers.length; i++){
             line = inputFile.nextLine();
             splitLine = line.split(",");
-            name = splitLine[0];
-            idNum = Integer.parseInt(splitLine[1]);
-            
-            if (splitLine[2].equals("TRUE")){
-                working = true;
-            }
-            else if (splitLine[2].equals("FALSE")){
-                working = false;
-            }
-            if (i <= (studentNum - 1)){
-                time = Integer.parseInt(splitLine[3]);
-                if(splitLine[4].equals("TRUE")){
-                    workStudy = true;
-                }
-                rate = Double.parseDouble(splitLine[5]);
-                workers[i] = new StudentEmployee(name, idNum, working, time, workStudy, rate);
-            }
-            else if (i <= (staffNum + studentNum - 1)) {
-                rate = Double.parseDouble(splitLine[3]);
-                dep = splitLine[4];
-                workers[i] = new ClassifiedStaff(name, idNum, working, rate, dep);
-            }
-            else if (i <= (staffNum + studentNum + facultyNum - 1)) {
-                rate = Double.parseDouble(splitLine[3]);
-                time = Integer.parseInt(splitLine[4]);
-                dep = splitLine[5];
-                workers[i] = new Faculty(name, idNum, working, rate, time, dep);
-            }
-            thingy(splitLine, i);
+            workers[i] = newEmp(splitLine, i, studentNum, staffNum, facultyNum);
         }
 
         //Close File Scanner
@@ -151,7 +115,35 @@ public class Project02StartingFiles {
         return 0;
     }   
 
-    private static void thingy(String[] line, int location){
-        System.out.println(line[location]);
+    private static Employee newEmp(String[] line, int num, int stu, int sta, int fac){
+        String name = line[0];
+        int idNum = Integer.parseInt(line[1]);
+        boolean working = Boolean.parseBoolean(line[2]);
+        int time;
+        boolean workStudy;
+        double rate;
+        String dep;
+        Employee worker = new StudentEmployee("Empty", 0, false, 0, false, 0);
+        if(num<=(stu - 1)){
+            time = Integer.parseInt(line[3]);
+            workStudy = Boolean.parseBoolean(line[4]);
+            rate = Double.parseDouble(line[5]);
+            worker = new StudentEmployee(name, idNum, working, time, workStudy, rate);
+        }
+        else if(num<=(sta + stu - 1)){
+            rate = Double.parseDouble(line[3]);
+            dep = line[4];
+            worker = new ClassifiedStaff(name, idNum, working, rate, dep);
+        }
+        else if(num<=(fac + sta + stu - 1)){
+            rate = Double.parseDouble(line[3]);
+            time = Integer.parseInt(line[4]);
+            dep = line[5];
+            worker = new Faculty(name, idNum, working, rate, time, dep);
+        }
+        
+        return worker;
+        
+
     }
 }
